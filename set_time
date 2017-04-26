@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+tm=$(date +"%H:%M:%S")
+
+TIME="sudo date +%H:%M:%S --set=$tm"
+
+	while read line; do
+	    tm=$(date +"%H:%M:%S")
+	    TIME="sudo date +%H:%M:%S --set=$tm"
+            USERNAME=pi
+	    HOSTNAME=$line
+            ssh -l ${USERNAME} ${HOSTNAME} "${TIME}" &
+            echo Time on Rpi $line is $tm
+        done < ip_addr_book.txt
+
+#ssh pi@192.168.2.17 "${TIME}" &
+#ssh pi@192.168.2.19 "${TIME}" &
+#ssh pi@192.168.2.20 "${TIME}" &
+
+#exit 1
+

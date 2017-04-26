@@ -1,0 +1,16 @@
+Please find contained an explanation of the usage of each of the XX functions that compose the multi-Rpi-vid program. I hope that you find this work extremely useful as I did in my research. It is by no means a perfect program, but it does offer a good degree of flexibility to take care of using numerous Raspberry Pi equipped with their camera module to take syncronized video.
+
+This program assumes a basic knowledge of the terminal command line found in Ubuntu, though it should work with other Linux distros.
+
+Installation:
+
+1. After download, open a terminal (ctrl+alt+t) and navigate to the downloaded folder.
+2. Type the following command: sudo bash install
+
+If you have root privileges, this should have gone off without a hitch. To test if everything is properly installed type: installation_test into the terminal and you should read "Multi-Rpi-vid V1.0 installed and working!"
+
+If an error pops up instead, it is likely because you do not have root privileges. To install Multi-Rpi-vid you will have to copy the camera_script file to somewhere in your home folder and then add that the directory to your PATH variable (e.g. PATH=$PATH:$HOME/bob/Multi-Rpi-vid)
+
+
+
+ 

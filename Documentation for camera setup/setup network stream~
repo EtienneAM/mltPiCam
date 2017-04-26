@@ -1,0 +1,14 @@
+This is how to set up a network stream:
+
+Make sure mplayer is installed:
+
+Run this on the desktop:
+
+nc -l -p 8000 | mplayer -vo xv -fps 24 -cache 512 -
+
+Run this on the pi:
+
+raspivid -w 300 -h 300 -fps 10 -t 600000 -o - | nc 192.168.0.200 8000
+
+
+Everything should run smoothly, this first (Desktop) listens for signals from the second (Rpi)

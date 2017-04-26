@@ -1,0 +1,15 @@
+#!/bin/bash
+
+dd=$(date +"%d")
+dm=$(date +"%m")
+dy=$(date +"%Y")
+dt="$dm/$dd/$dy"
+DATE="sudo date +%d%m%Y --set=$dt"
+        while read line; do
+            USERNAME=pi
+            HOSTNAME=$line
+            ssh -l ${USERNAME} ${HOSTNAME} "${DATE}" &
+            echo "Date on Rpi $line in dd/mm/yyyy format is: $dd/$dm/$dy"
+        done < ip_addr_book.txt
+exit 1
+

@@ -1,0 +1,7 @@
+#! /bin/bash
+echo "PLEASE WAIT FOR UP TO 2 MINUTES FOR VIDEO TO APPEAR ..."
+nc -l -w 2 -p 8000 | mplayer -vo xv -fps 24 -cache 512 - &
+ssh pi@192.168.0.$1 "raspivid -vf -hf -w 300 -h 300 -fps 10 -t 6000000 -o - | nc 192.168.0.200 8000" &
+
+
+

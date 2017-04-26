@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "Enter first three parts of your ip address subdomain (ex. 192.168.0.):[ENTER}"
+read subdomain
+echo "Enter last 2 digits of the ip address of each of your Rpi separated by a space:[ENTER]"
+read -a arr
+echo "You have entered ${#arr[@]} RPi addresses."
+
+rm ./ip_addr_book.txt
+touch ./ip_addr_book.txt
+for i in ${arr[@]} ; do
+    ipaddr="$subdomain$i"
+    echo "$ipaddr"
+    echo "$ipaddr" >> ./ip_addr_book.txt 
+done
+
+
+

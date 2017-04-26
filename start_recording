@@ -1,0 +1,112 @@
+#!/bin/bash
+
+ read -r -p "Have you downloaded the videos from the last trial? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+	echo "O.K."
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "Opps, download the files from the RPis before continuing..."
+	exit 1
+ fi
+#####
+ read -r -p "Have you made backups of last trial? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+        echo "O.K."
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "Backups would be a very nice thing to have ..."
+	exit 1
+ fi
+#####
+ read -r -p "Have you cleared the video files from the Rpis disk to make space? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+        echo "O.K."
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "Waste not, want not ..."
+	exit 1
+ fi
+
+ read -r -p "Have you run check_connection to make sure all Rpi are online? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+        echo "O.K."
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "Run check_connection then come back."
+        exit 1
+ fi
+
+ read -r -p "Have you run set_date then set_time in this order? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+        echo "O.k. everything is in sync."
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "The time on each Pi can be synced using the commands set_date and set_time in this order."
+        exit 1
+ fi
+
+ read -r -p "Have you run a video check to make sure images look right? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+        echo "O.K."
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "It would be nice to know if the cameras are lined up and functinonal ..."
+        exit 1
+ fi
+
+ read -r -p "Are all the video parameters set correclty in the master capture.py file? (e.g. fps, resolution) [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+        echo "O.K."
+ fi
+
+ read -r -p "If you made changes to the master capture.py script, have you uploaded it to the Rpi's? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+        echo "O.K."
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "The modified capture.py file can be uploaded using the command: bash upload_files /path/capture.py /home/pi. Make sure all ip's are specified in upload_files!"
+        exit 1
+ fi
+
+ read -r -p "Are you absolutely sure you want to start recording the next trial? [Y/n]" response
+ response=${response,,} # tolower
+ if [[ $response =~ ^(yes|y| ) ]]; then
+	echo -n "Please provide a trial identifier, followed by [ENTER]:"
+	read identifier
+
+	echo -n "How long of a video do you want to record (in seconds)? [ENTER]:"
+	read duration
+
+	USERNAME=pi
+	SCRIPT="python capture.py $identifier $duration"
+	
+	while read line; do
+	    HOSTNAME=$line
+	    ssh -l ${USERNAME} ${HOSTNAME} "${SCRIPT}" &
+	    tm=$(date +"%H:%M:%S") 
+	    echo video started on $line at $tm
+	done < ip_addr_book.txt
+
+        echo "Check red LED on cameras if you want to make sure they are recording!"
+	exit 1
+ fi
+
+ if [[ $response =~ ^(no|n| ) ]]; then
+        echo "Why are you so scared? Go get a glass of warm milk ..."
+        exit 1
+ fi

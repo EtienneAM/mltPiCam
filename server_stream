@@ -1,0 +1,21 @@
+\#! /bin/bash
+echo "PLEASE WAIT FOR UP TO 2 MINUTES FOR VIDEO TO APPEAR ..."
+sleep 2
+echo "Connecting to Pi's, ignore errors ... they will pop up eventually."
+Sleep 5
+
+nc -l -w 5 -p 8000 | mplayer -vo xv -fps 24 -cache 512 - &
+nc -l -w 5 -p 8001 | mplayer -vo xv -fps 24 -cache 512 - &
+nc -l -w 5 -p 8002 | mplayer -vo xv -fps 24 -cache 512 - &
+nc -l -w 5 -p 8003 | mplayer -vo xv -fps 24 -cache 512 - &
+
+
+#sleep 2
+
+ssh pi@192.168.0.10 "raspivid -vf -hf -w 300 -h 300 -fps 10 -t 6000000 -o - | nc 192.168.0.200 8000" &
+ssh pi@192.168.0.12 "raspivid -vf -hf -w 300 -h 300 -fps 10 -t 6000000 -o - | nc 192.168.0.200 8001" &
+ssh pi@192.168.0.15 "raspivid -vf -hf -w 300 -h 300 -fps 10 -t 6000000 -o - | nc 192.168.0.200 8002" &
+ssh pi@192.168.0.17 "raspivid -vf -hf -w 300 -h 300 -fps 10 -t 6000000 -o - | nc 192.168.0.200 8003" &
+
+
+

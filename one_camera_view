@@ -1,0 +1,4 @@
+#!/bin/bash
+
+nc -l -w 5 -p 8000 | mplayer -vo xv -fps 24 -cache 512 - &
+ssh pi@192.168.0.$1 "raspivid -vf -hf -w 1000 -h 600 -fps 10 -t 6000000 -o - | nc 192.168.0.200 8000" &

@@ -1,0 +1,16 @@
+#! /bin/bash
+
+#takes 2 arguments: the file to send, the directory to send it to (e.g. /home/pi)
+
+       while read line; do
+            
+	    HOSTNAME=$line
+            USERNAME=pi
+	    scp $1 ${USERNAME}@${HOSTNAME}:$2  &
+             
+            
+        done < ip_addr_book.txt
+
+#scp $1 pi@192.168.2.17:$2 &
+#scp $1 pi@192.168.2.19:$2 &
+#scp $1 pi@192.168.2.20:$2 &

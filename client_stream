@@ -1,0 +1,9 @@
+#! /bin/bash
+
+USERNAME=pi
+HOSTS="192.168.0."$1
+SCRIPT="raspivid -vf -w 300 -h 300 -fps 10 -t 600000 -o - | nc 192.168.0.200 $2"
+
+for HOSTNAME in ${HOSTS} ; do
+    ssh -l ${USERNAME} ${HOSTNAME} "${SCRIPT}"
+done
