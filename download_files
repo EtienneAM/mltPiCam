@@ -1,20 +1,22 @@
 #! /bin/bash
 
-#takes 1 argument: the file to download (with its directory on the pi)
 
- read -r -p "Are you sure? [Y/n]" response
- response=${response,,} # tolower
- if [[ $response =~ ^(yes|y| ) ]]; then
+
+	echo -n "Enter file name with path (can use * on long file names), then press [ENTER]:"
+	read name
+	echo -n "Enter destination directory, then press [ENTER]:"
+	read identifier
+
        while read line; do
 
             HOSTNAME=$line
             USERNAME=pi
-            scp ${USERNAME}@${HOSTNAME}:$1 /home/jason/Desktop/151004B  &
+            scp ${USERNAME}@${HOSTNAME}:$name $identifier  &
 
 
         done < ip_addr_book.txt
         
- fi
+ 	echo "Wait for files to complete download before deleting them with delete_videos script"
 
 
 

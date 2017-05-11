@@ -8,14 +8,17 @@ import sys
 with picamera.PiCamera() as camera:
         camera.resolution = (1000, 600)
 	camera.framerate = 27
-	camera.vflip=True
-	camera.hflip=True
-	camera.start_preview()
+	camera.vflip=True #vertical flip
+	camera.hflip=True #horizontal flip
+
+	camera.start_preview() 
     	camera.annotate_background = picamera.Color('black')
+
     	camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 	timestamp=dt.datetime.now().strftime('%Y%m%d_%H:%M:%S')
-	addr=commands.getoutput("/sbin/ifconfig").split("\n")[1].split()[1][5:]
-	camera.start_recording('%s_%s_%s.h264' % (str(sys.argv[1]), timestamp, (addr)))
+
+	addr=commands.getoutput("/sbin/ifconfig").split("\n")[1].split()[1][5:] #finds local ip address
+	camera.start_recording('%s_%s_%s.h264' % (str(sys.argv[1]), timestamp, (addr))) #starts recording and names file with 
     	start = dt.datetime.now()
 	stptime = int(sys.argv[2])
     	while (dt.datetime.now() - start).seconds < stptime:
