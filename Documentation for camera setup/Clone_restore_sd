@@ -1,14 +1,43 @@
-Notes on SD card management:
+Follow these instructions if you are having troubles and want to clone a fresh raspian image to an SD card:
 
-Cloning an image of the raspberry Pi:
+1.) Plug micro USB adapter with recovery image into computer
 
-This command places a compressed image of the disk where ever you want it on your computer.
+2.) Run 'dmesg', you should see a drive name (eg. /sdb) associated to the newly connected USB drive in the newest lines of the dmesg log.
 
-sudo dd bs=4M if=/dev/sdb | gzip > /home/your_username/image`date +%d%m%y`.gz
+3.) Change /sdb in the following command to the drive name you found in step 2, it might still be /sdb. Also specify the path where you 
+    want to save the drive image
 
-Restore to a fresh card (make sure to change the card and use the right path):
+	sudo dd bs=4M if=/dev/sdb | gzip > /home/your_username/Desktop/image`date +%d%m%y`.gz
 
-sudo gzip -dc /home/your_username/image.gz | sudo dd bs=4M of=/dev/sdc
+4.) Run the above command in the terminal. The process can take 15 to 20 minutes. You will know when it is done when you will be able to enter 
+    commands into the terminal again. Also, monitor the progress in "System monitor" with the gzip process, it is done when the gzip process goes away.
+
+5.) You now have a fully configured Raspian image. You can now remove the recovery card from the USB/sd adapter and place in a new card or
+    an old reformatted card. Then run 'dmesg' to double check the name of the adapter. Then run the following command with the correct paths and
+    USB adapter name:
+
+	sudo gzip -dc /home/your_username/imageXXXXXX.gz | sudo dd bs=4M of=/dev/sdb
+
+6.) This image should work when inserted into a raspberry pi. It will have a 192.168.0.1 ip address. To connect to it over ssh make sure
+    any other raspberry pi with 192.168.0.1 is not connected. Then you will need to change the ip address.
+
+with,
+
+sudo nano /etc/network/interfaces
 
 
-*the whole process 
+make sure your new ip address is properly set and that everything looks similar to this:
+
+auto lo
+iface lo inet loopback
+iface eth0 inet static
+address 192.168.0.10  <------set ip address here, ex. 192.168.0.3
+netmask 255.255.255.0
+broadcast 192.168.0.255
+
+
+ 
+
+
+
+
