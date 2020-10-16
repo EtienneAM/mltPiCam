@@ -6,10 +6,10 @@ import commands
 import sys
 
 with picamera.PiCamera() as camera:
-        camera.resolution = (1000, 600)
-	camera.framerate = 27
-	camera.vflip=True #vertical flip
-	camera.hflip=True #horizontal flip
+        camera.resolution = (1920, 1080)
+	camera.framerate = 30
+	#camera.vflip=True #vertical flip
+	#camera.hflip=True #horizontal flip
 
 	camera.start_preview() 
     	camera.annotate_background = picamera.Color('black')
