@@ -1,17 +1,19 @@
-#! /bin/bash
+i#! /bin/bash
 
 
 
 	echo -n "Enter file name with path (can use * on long file names), then press [ENTER]:"
-	read name
-	echo -n "Enter destination directory, then press [ENTER]:"
 	read identifier
+	
+	IFS='.'
+	
 
        while read line; do
 
             HOSTNAME=$line
             USERNAME=pi
-            scp ${USERNAME}@${HOSTNAME}:$name $identifier  &
+	    read -ra ADDR <<< "$line"
+            scp ${USERNAME}@${HOSTNAME}:${identifier}_${ADDR[0]}.h264 /home/pi/${identifier}/ &
 
 
         done < ip_addr_book.txt
