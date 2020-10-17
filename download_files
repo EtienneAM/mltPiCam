@@ -1,10 +1,10 @@
 #! /bin/bash
 
 echo "Hi !"
-echo -n "Enter trial name, then press [ENTER]:"
+echo -n "Enter trial name, then press [ENTER]: "
 read identifier
 
-read -r -p "Do you wish to proceed with files transfer ? [Y/n]" response
+read -r -p "Do you wish to proceed with files transfer ? [Y/n]: " response
 	response=${response,,} # tolower
 	if [[ $response =~ ^(yes|y| ) ]]; then
 		mkdir -p /home/pi/${identifier}
@@ -19,7 +19,7 @@ read -r -p "Do you wish to proceed with files transfer ? [Y/n]" response
 	
 			echo "Please wait for ${ADDR[0]} ..."
 			scp ${USERNAME}@${HOSTNAME}:${filename} /home/pi/${identifier}
-			echo "${filename} transfered." &
+			echo "${filename} transfered."
 		done < ip_addr_book.txt
 	fi
 
@@ -27,7 +27,7 @@ read -r -p "Do you wish to proceed with files transfer ? [Y/n]" response
 		echo "OK"
 	fi
 
-read -r -p "Do you wish to proceed with remote files deletion ? [Y/n]" response
+read -r -p "Do you wish to proceed with remote files deletion ? [Y/n]: " response
 	response=${response,,} # tolower
 	if [[ $response =~ ^(yes|y| ) ]]; then
 		while read line; do
@@ -38,10 +38,11 @@ read -r -p "Do you wish to proceed with remote files deletion ? [Y/n]" response
 			IFS=' '
 	    
 			filename="${identifier}_${ADDR[0]}.h264"
-	
+			SCRIPT="rm ${filename}"
+			
 			echo "Please wait for ${ADDR[0]} ..."
 			ssh -l ${USERNAME}@${HOSTNAME} "${SCRIPT}"
-			echo "${filename} deleted from ${ADDR[0]}." &
+			echo "${filename} deleted from ${ADDR[0]}."
 		done < ip_addr_book.txt
 	fi
 
