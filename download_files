@@ -1,4 +1,4 @@
-i#! /bin/bash
+#! /bin/bash
 
 echo "Hi !"
 echo -n "Enter trial name, then press [ENTER]:"
