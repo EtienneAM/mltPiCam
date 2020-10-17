@@ -14,9 +14,9 @@ read -r -p "Do you wish to proceed with files transfer ? [Y/n]: " response
 			IFS='.'
 			read -ra ADDR <<< "$line"
 			IFS=' '
-	    
+
 			filename="${identifier}_${ADDR[0]}.h264"
-	
+
 			echo "Please wait for ${ADDR[0]} ..."
 			scp ${USERNAME}@${HOSTNAME}:${filename} /home/pi/${identifier}
 			echo "${filename} transfered."
@@ -30,16 +30,16 @@ read -r -p "Do you wish to proceed with files transfer ? [Y/n]: " response
 read -r -p "Do you wish to proceed with remote files deletion ? [Y/n]: " response
 	response=${response,,} # tolower
 	if [[ $response =~ ^(yes|y| ) ]]; then
-		while read line2; do
-			HOSTNAME=$line2
+		while read line; do
+			HOSTNAME=$line
 			USERNAME=pi
 			IFS='.'
-			read -ra ADDR <<< "$line2"
+			read -ra ADDR <<< "$line"
 			IFS=' '
-	    
+
 			filename="${identifier}_${ADDR[0]}.h264"
 			SCRIPT="rm ${filename}"
-			
+
 			echo "Please wait for ${ADDR[0]} ..."
 			ssh ${USERNAME}@${HOSTNAME} "${SCRIPT}"
 			echo "${filename} deleted from ${ADDR[0]}."
