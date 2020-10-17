@@ -41,7 +41,7 @@ read -r -p "Do you wish to proceed with remote files deletion ? [Y/n]: " respons
 			SCRIPT="rm ${filename}"
 			
 			echo "Please wait for ${ADDR[0]} ..."
-			ssh -l ${USERNAME}@${HOSTNAME} "${SCRIPT}"
+			ssh ${USERNAME}@${HOSTNAME} "${SCRIPT}"
 			echo "${filename} deleted from ${ADDR[0]}."
 		done < ip_addr_book.txt
 	fi
