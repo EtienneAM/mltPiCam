@@ -14,7 +14,7 @@ with picamera.PiCamera() as camera:
 	camera.start_preview() 
     	camera.annotate_background = picamera.Color('black')
 
-    	camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    	camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
 	timestamp=dt.datetime.now().strftime('%Y%m%d_%H:%M:%S')
 
 	addr=commands.getoutput("/sbin/ifconfig").split("\n")[1].split()[1][5:] #finds local ip address
@@ -22,7 +22,7 @@ with picamera.PiCamera() as camera:
     	start = dt.datetime.now()
 	stptime = int(sys.argv[2])
     	while (dt.datetime.now() - start).seconds < stptime:
-        	camera.annotate_text = str(sys.argv[1]) + '_' + dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        	camera.annotate_text = str(sys.argv[1]) + '_' + dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
         	camera.wait_recording(0.2)
     
     	camera.stop_recording()
