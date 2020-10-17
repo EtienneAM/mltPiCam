@@ -1,27 +1,53 @@
 i#! /bin/bash
 
+echo "Hi !"
+echo -n "Enter trial name, then press [ENTER]:"
+read identifier
 
-
-	echo -n "Enter trial name, then press [ENTER]:"
-	read identifier
+read -r -p "Do you wish to proceed with files transfer ? [Y/n]" response
+	response=${response,,} # tolower
+	if [[ $response =~ ^(yes|y| ) ]]; then
+		mkdir -p /home/pi/${identifier}
+		while read line; do
+			HOSTNAME=$line
+			USERNAME=pi
+			IFS='.'
+			read -ra ADDR <<< "$line"
+			IFS=' '
+	    
+			filename="${identifier}_${ADDR[0]}.h264"
 	
-	IFS='.'
+			echo "Please wait for ${ADDR[0]} ..."
+			scp ${USERNAME}@${HOSTNAME}:${filename} /home/pi/${identifier}
+			echo "${filename} transfered." &
+		done < ip_addr_book.txt
+		exit 1
+	fi
+
+	if [[ $response =~ ^(no|n| ) ]]; then
+		echo "OK"
+	fi
+
+read -r -p "Do you wish to proceed with remote files deletion ? [Y/n]" response
+	response=${response,,} # tolower
+	if [[ $response =~ ^(yes|y| ) ]]; then
+		while read line; do
+			HOSTNAME=$line
+			USERNAME=pi
+			IFS='.'
+			read -ra ADDR <<< "$line"
+			IFS=' '
+	    
+			filename="${identifier}_${ADDR[0]}.h264"
 	
+			echo "Please wait for ${ADDR[0]} ..."
+			ssh -l ${USERNAME}@${HOSTNAME} "${SCRIPT}"
+			echo "${filename} deleted from ${ADDR[0]}." &
+		done < ip_addr_book.txt
+	fi
 
-       while read line; do
-
-            HOSTNAME=$line
-            USERNAME=pi
-	    read -ra ADDR <<< "$line"
-            scp ${USERNAME}@${HOSTNAME}:${identifier}_${ADDR[0]}.h264 /home/pi/${identifier}/ &
-
-
-        done < ip_addr_book.txt
-        
- 	echo "Wait for files to complete download before deleting them with delete_videos script"
-
-
-
-
-
-
+	if [[ $response =~ ^(no|n| ) ]]; then
+		echo "OK"
+	fi
+echo "Exiting ..."
+exit 1
