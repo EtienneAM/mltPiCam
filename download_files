@@ -21,7 +21,6 @@ read -r -p "Do you wish to proceed with files transfer ? [Y/n]" response
 			scp ${USERNAME}@${HOSTNAME}:${filename} /home/pi/${identifier}
 			echo "${filename} transfered." &
 		done < ip_addr_book.txt
-		exit 1
 	fi
 
 	if [[ $response =~ ^(no|n| ) ]]; then
