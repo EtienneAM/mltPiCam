@@ -18,7 +18,7 @@ with picamera.PiCamera() as camera:
 	timestamp=dt.datetime.now().strftime('%Y%m%d_%H:%M:%S')
 
 	addr=commands.getoutput("/sbin/ifconfig").split("\n")[1].split()[1][5:] #finds local ip address
-	camera.start_recording('%s_%s_%s.h264' % (str(sys.argv[1]), timestamp, (addr))) #starts recording and names file with 
+	camera.start_recording('%s_%s.h264' % (str(sys.argv[1]), socket.gethostname())) #starts recording and names file with 
     	start = dt.datetime.now()
 	stptime = int(sys.argv[2])
     	while (dt.datetime.now() - start).seconds < stptime:
