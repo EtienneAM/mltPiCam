@@ -2,7 +2,7 @@ i#! /bin/bash
 
 
 
-	echo -n "Enter file name with path (can use * on long file names), then press [ENTER]:"
+	echo -n "Enter trial name, then press [ENTER]:"
 	read identifier
 	
 	IFS='.'
