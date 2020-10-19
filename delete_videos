@@ -1,25 +1,29 @@
 #!/bin/bash
 
-#takes 1 argument: the path to the file and its name on the pi
-read -r -p "This script deletes the video(s) you specify from all the cameras, are you sure? [Y/n]" response
- response=${response,,} # tolower
+echo -n "Enter trial name, then press [ENTER]: "
+read identifier
 
- if [[ $response =~ ^(yes|y| ) ]]; then
-	echo -n "Enter trial name, then press [ENTER]:"
-	read identifier
+read -r -p "Do you wish to proceed with remote files deletion ? [Y/n]: " response
+	response=${response,,} # tolower
+	if [[ $response =~ ^(yes|y| ) ]]; then
+		while read line; do
+			HOSTNAME=$line
+			USERNAME=pi
+			IFS='.'
+			read -ra ADDR <<< "$line"
+			IFS=' '
 
-	USERNAME=pi
+			filename="${identifier}_${ADDR[0]}.h264"
+			SCRIPT="rm ${filename}"
 
-	while read line; do
-	    HOSTNAME=$line
-	    IFS='.'
-	    
-	    read -ra ADDR <<< "$line"
-	    
-	    SCRIPT="rm ${identifier}_${ADDR[0]}.h264"
-	    
-	    ssh -l ${USERNAME}@${HOSTNAME} "${SCRIPT}" &
-	done < ip_addr_book.txt
-        
- fi
+			echo "Please wait for ${ADDR[0]} ..."
+			ssh ${USERNAME}@${HOSTNAME} "${SCRIPT}"
+			echo "${filename} deleted from ${ADDR[0]}."
+		done < ip_addr_book.txt
+	fi
 
+	if [[ $response =~ ^(no|n| ) ]]; then
+		echo "OK"
+	fi
+echo "Exiting ..."
+exit 1
